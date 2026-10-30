@@ -1,0 +1,23 @@
+{
+    "name": "jethro/smsmockserver",
+    "description": "Mock Cellcast, 5CentSMS v5 and MobileMessage APIs for functional tests",
+    "type": "project",
+    "require": {
+        "php": ">=8.2",
+        "ext-curl": "*",
+        "ext-pdo_mysql": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "SmsMockServer\\": "src/"
+        }
+    },
+    "bin": [
+        "bin/check",
+        "bin/record"
+    ],
+    "scripts": {
+        "start": "php -S 127.0.0.1:${SMSMOCK_PORT:-8083} -t webroot webroot/index.php",
+        "test": "php tests/run.php"
+    }
+}

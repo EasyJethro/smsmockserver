@@ -1,0 +1,18 @@
+{
+    "request": {
+        "method": "DELETE",
+        "path": "/v1/messages",
+        "body": {
+            "message_id": "f849f8d9-e111-4ba0-979e-183f6a450fd9"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "status": "complete",
+            "message_id": "f849f8d9-e111-4ba0-979e-183f6a450fd9",
+            "cancelled": true,
+            "credits_refunded": 1
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "request": {
+        "method": "DELETE",
+        "path": "/v1/messages",
+        "body": {
+            "message_id": "f849f8d9-e111-4ba0-979e-183f6a450fd9"
+        }
+    },
+    "response": {
+        "status": 409,
+        "body": {
+            "error": "Message is not in a scheduled state."
+        }
+    }
+}

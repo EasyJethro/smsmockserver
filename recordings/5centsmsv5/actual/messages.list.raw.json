@@ -1,0 +1,29 @@
+{
+    "request": {
+        "method": "GET",
+        "path": "/sms"
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "messages": [
+                {
+                    "destination": "614xxxxxxxx",
+                    "sender": "614xxxxxxxx",
+                    "id": "6adc1cbc65e153c4ef071e86",
+                    "status": 1005,
+                    "status_text": "Scheduled",
+                    "message_text": "Jethro smsmockserver recording: scheduled a day ahead, then cancelled",
+                    "credits": 1,
+                    "send_timestamp": 1792896572,
+                    "delivery_timestamp": "",
+                    "delivery_network": "",
+                    "customer_data": ""
+                }
+            ],
+            "error": "",
+            "next_page": "/api/v5/sms?after=6ad16844ab02de4a170daca3",
+            "count": 100
+        }
+    }
+}

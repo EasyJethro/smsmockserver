@@ -1,0 +1,18 @@
+{
+    "request": {
+        "method": "DELETE",
+        "path": "/sms/6adc1cbc65e153c4ef071e86"
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "error": "",
+            "messages": {
+                "destination": "614xxxxxxxx",
+                "id": "6adc1cbc65e153c4ef071e86",
+                "status": "1007",
+                "status_text": "Cancelled"
+            }
+        }
+    }
+}
