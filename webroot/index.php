@@ -49,13 +49,16 @@ use SmsMockServer\Provider\MobileMessage;
 
 // ── Bootstrap ─────────────────────────────────────────────────────────
 
-// Profiles (idempotent — each file registers via init hooks). Defaults cover a
-// vendored copy (./profiles) and the Jethro functional-test profiles.
-$profileDirs = getenv('SMSMOCK_PROFILES');
-$profileDirs = $profileDirs !== false && $profileDirs !== ''
-    ? explode(PATH_SEPARATOR, $profileDirs)
-    : array_values(array_filter([__DIR__ . '/../profiles', __DIR__ . '/../../tests/functional'], 'is_dir'));
-foreach ($profileDirs as $profileDir) {
+// Profiles (idempotent — each file registers via init hooks). The bundled
+// profiles/ directory is always loaded; SMSMOCK_PROFILES (PATH_SEPARATOR-
+// separated) adds extra directories supplied by the host, e.g. Jethro's
+// tests/functional tree.
+$profileDirs = [__DIR__ . '/../profiles'];
+$extra = getenv('SMSMOCK_PROFILES');
+if ($extra !== false && $extra !== '') {
+    $profileDirs = array_merge($profileDirs, explode(PATH_SEPARATOR, $extra));
+}
+foreach (array_values(array_filter($profileDirs, 'is_dir')) as $profileDir) {
     Profile::loadProfiles($profileDir);
 }
 // Register built-in default profiles (no overrides — plain provider passthrough)

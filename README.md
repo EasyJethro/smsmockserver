@@ -1,24 +1,18 @@
-SMSMockServer is technically an independent PHP webapp that mimics the APIs of SMS providers (currently 5CentSMS, Cellcast and MobileMessage). It is used for functional testing the Jethro SMS implementation.
+SMSMockServer is an independent PHP webapp that mimics the APIs of SMS
+providers (currently 5CentSMS, Cellcast and MobileMessage). It is used for
+functional testing the Jethro SMS implementation.
 
-SMSMockServer is mounted at:
+Jethro mounts this server behind its own nginx/php-fpm at `/smsmockserver/` so
+test configs can use host-relative URLs; Jethro passes `SMSMOCK_PROFILES`
+pointing back at its `tests/functional` tree, where the per-scenario profile
+files live.
 
- - http://localhost:8081/smsmockserver/ in the demo instance (see ../DEVELOPMENT_DEVBOX.md)
- - http://localhost:8089/smsmockserver/ in the functest instance (see ../DEVELOPMENT_FUNCTESTS.md)
-
- both via a nginx snippet in ../devbox.d/nginx/nginx.template:
-
-```nginx
-        location ~ ^/smsmockserver(/.*)?$ {
-            root ../../../smsmockserver/webroot;
-            include fastcgi.conf;
-            fastcgi_param SCRIPT_FILENAME $realpath_root/index.php;
-            fastcgi_param SCRIPT_NAME /smsmockserver/index.php;
-            fastcgi_param PATH_INFO $1;
-            fastcgi_pass php_backend;
-        }
-```
-
-It refuses to run unless `SMSMOCK_ENABLED=1` is in the environment (devbox's `php-fpm.conf` sets it; standalone use passes it on the command line). That matters because the mock ships with Jethro: on an install whose document root is the repository root, `/smsmockserver/webroot/index.php` is otherwise reachable, loads the test profiles and opens a database connection. In production, `SMS_TESTMODE=true` is generally the right way to keep SMS temporarily present but non-functional.
+It refuses to run unless `SMSMOCK_ENABLED=1` is in the environment (Jethro's
+`php-fpm.conf` sets it; standalone use passes it on the command line). That
+matters because the server is reachable wherever the host document root exposes
+`webroot/index.php`: without the flag it would load profiles and open a database
+connection. In production, `SMS_TESTMODE=true` is generally the right way to keep
+SMS temporarily present but non-functional.
 
 ## Standalone use (vendoring)
 
@@ -39,7 +33,7 @@ SMSMOCK_DB_USER=smsmock SMSMOCK_DB_PASS=… \
 | Environment | Purpose |
 |---|---|
 | `SMSMOCK_ENABLED` | Must be `1` or the front controller returns 404 |
-| `SMSMOCK_PROFILES` | `:`-separated profile directories (default: `./profiles`, then the Jethro functest tree) |
+| `SMSMOCK_PROFILES` | extra `:`-separated profile directories, added to the bundled `profiles/` (Jethro passes its `tests/functional` tree) |
 | `SMSMOCK_PROFILE_PREFIX` | Profile URL prefix (default `profiles`): `/profiles/{profile}/…`; `/tests/functional/{dir}/{profile}/…` always works too |
 | `SMSMOCK_DSN`, `_DB_USER`, `_DB_PASS` | Database; default is the devbox MariaDB socket database `jethro_functest_smsmockserver` |
 | `SMSMOCK_URL` | Base URL used by `bin/check` (default `http://127.0.0.1:8089/smsmockserver`) |
